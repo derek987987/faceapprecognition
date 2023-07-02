@@ -180,6 +180,10 @@ class App extends Component {
     console.log(container);
   }
 
+  onRouteChange = (route) => {
+    this.setState({route: route})
+  }
+
   render(){
     return (
       <div className="App">
@@ -189,9 +193,9 @@ class App extends Component {
             loaded={this.particlesLoaded}
             options={particlesoptions}
         />
-        <Navigation />
+        <Navigation onRouteChange={this.onRouteChange}/>
         { this.state.route === 'signin'
-        ? <Signin />
+        ? <Signin onRouteChange={this.onRouteChange}/>
         : <div>
             <Logo />
             <Rank />
