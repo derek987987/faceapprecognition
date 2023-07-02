@@ -8,6 +8,7 @@ import Logo from './components/Logo/Logo';
 import ImageLinkForm from './components/ImageLinkForm/ImageLinkForm';
 import Rank from './components/Rank/Rank';
 import './App.css';
+import Signin from './components/Signin/Signin';
 
 // Your PAT (Personal Access Token) can be found in the portal under Authentification
 const PAT = 'c17c36740ffa41a1bc7fdf2de3724531';
@@ -101,7 +102,8 @@ class App extends Component {
     this.state = {
         input:'',
         imageUrl:'',
-        box:{}
+        box:{},
+        route:'signin'
     }
   }
 
@@ -188,11 +190,15 @@ class App extends Component {
             options={particlesoptions}
         />
         <Navigation />
-        <Logo />
-        <Rank />
-        <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
-        <FaceRecognition box={this.state.box} imageUrl = {this.state.imageUrl} />
-  
+        { this.state.route === 'signin'
+        ? <Signin />
+        : <div>
+            <Logo />
+            <Rank />
+            <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
+            <FaceRecognition box={this.state.box} imageUrl = {this.state.imageUrl} /> 
+         </div>
+        }
       </div>
     );
   } 
