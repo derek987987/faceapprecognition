@@ -1,8 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+const bcrypt = require('bcrypt');
+const cors = require('cors');
 
 const app = express();
 app.use(bodyParser.json());
+app.use(cors());
 
 const database = {
     users:[
@@ -30,16 +33,28 @@ app.get('/',(req,res)=>{
 })
 
 app.post('/signin',(req,res)=>{
+    // Load hash from your password DB.
+    // bcrypt.compare('apple', '$2b$10$AB8pfAJUGHIid7ueMfj3bOsAcyeOphK1Lu/gx7ozkSV93W.pKdu6S', function(err, result) {
+    //     console.log('first guess' + result);
+    // });
+    // bcrypt.compare('orange', '$2b$10$AB8pfAJUGHIid7ueMfj3bOsAcyeOphK1Lu/gx7ozkSV93W.pKdu6S', function(err, result) {
+    //     console.log('second guess' + result);
+    // });
     
     if(req.body.email === database.users[0].email && req.body.password === database.users[0].password){
         res.send('this is signing');
     }else{
-        res.send('there is error signin');
+        res.status(400).send('there is error signin');
     }
 })
 
 app.post('/register',(req,res)=>{
     const {email,name,password} = req.body;
+    // bcrypt.genSalt(10, function(err, salt) {
+    //     bcrypt.hash(password, salt, function(err, hash) {
+    //         console.log(hash);
+    //     });
+    // });
     database.users.push({
         id:'125',
         name:name,
