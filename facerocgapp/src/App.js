@@ -166,6 +166,17 @@ class App extends Component {
         .then(response => response.json())
         .then(result => {
             console.log(result);
+            fetch('http://localhost:3000/image', {
+                method:'put',
+                headers:{'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    id: this.state.user.id
+                })
+            })
+            .then(response=>response.json())
+            .then(count=>{
+                this.setState(Object.assign(this.state.user, { entries: count[0].entries}));
+            })
             //console.log(result.outputs[0].data.regions[0].region_info.bounding_box);
             this.displayFaceBox(this.calculateFaceLocation(result));
         })
@@ -204,7 +215,7 @@ class App extends Component {
         {route === 'home'
         ? <div>
             <Logo />
-            <Rank />
+            <Rank name={this.state.user.name} entries={this.state.user.entries}/>
             <ImageLinkForm onInputChange={this.onInputChange} onButtonSubmit={this.onButtonSubmit}/>
             <FaceRecognition box={box} imageUrl = {imageUrl} /> 
         </div>
