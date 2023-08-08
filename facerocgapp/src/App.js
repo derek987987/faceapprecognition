@@ -209,6 +209,7 @@ class App extends Component {
             .then(count=>{
                 this.setState(Object.assign(this.state.user, { entries: count[0].entries}));
             })
+            .catch(console.log)
             //console.log(result.outputs[0].data.regions[0].region_info.bounding_box);
             this.displayFaceBox(this.calculateFaceLocation(result));
         })
