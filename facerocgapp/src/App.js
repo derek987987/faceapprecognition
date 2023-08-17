@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
 import Particles from "react-particles";
 import { loadFull } from "tsparticles";
-import Clarifai from "clarifai";
 import Navigation from './components/Navigation/Navigation';
 import FaceRecognition from './components/FaceRecognition/FaceRecognition';
 import Logo from './components/Logo/Logo';
@@ -10,16 +9,6 @@ import Rank from './components/Rank/Rank';
 import './App.css';
 import Signin from './components/Signin/Signin';
 import Register from './components/Register/Register';
-
-// Your PAT (Personal Access Token) can be found in the portal under Authentification
-const PAT = 'c17c36740ffa41a1bc7fdf2de3724531';
-// Specify the correct user_id/app_id pairings
-// Since you're making inferences outside your app's scope
-const USER_ID = 'clarifai';       
-const APP_ID = 'main';
-// Change these to whatever model and image URL you want to use
-const MODEL_ID = 'face-detection';
-const MODEL_VERSION_ID = '45fb9a671625463fa646c3523a3087d5';
 
 const particlesoptions = {
   background: {
@@ -167,34 +156,16 @@ class App extends Component {
 
   onButtonSubmit = () => {
     console.log("onButtonSubmit this.state.input", this.state.input);
-    const raw = JSON.stringify({
-        "user_app_id": {
-            "user_id": USER_ID,
-            "app_id": APP_ID
-        },
-        "inputs": [
-            {
-                "data": {
-                    "image": {
-                        "url": this.state.input
-                    }
-                }
-            }
-        ]
-    });
-    
-    const requestOptions = {
-        method: 'POST',
-        headers: {
-            'Accept': 'application/json',
-            'Authorization': 'Key ' + PAT
-        },
-        body: raw
-    };
 
     //console.log('click');
     this.setState({imageUrl: this.state.input})
-    fetch("https://api.clarifai.com/v2/models/" + MODEL_ID + "/versions/" + MODEL_VERSION_ID + "/outputs", requestOptions)
+        fetch('http://localhost:3000/imageurl', {
+                method:'post',
+                headers:{'Content-Type': 'application/json'},
+                body: JSON.stringify({
+                    input: this.state.input
+                })
+            })
         .then(response => response.json())
         .then(result => {
             console.log(result);
